@@ -27,8 +27,52 @@ namespace Double_Linked_List
         static void Main(string[] args)
         {
             List list = new List();
-            Node node; 
+            Node node;
+            int nodesToAdd = 5;
+            //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
+            Random r = new Random();                            //
+            //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
 
+            //Creates a pre-determined set of nodes
+            for (int i = 0; i < nodesToAdd; i++)
+            {
+                node = new Node();
+                node.data = r.Next(100);
+                InsertFront(list, node);
+            }
+
+            ShowList(list);
+
+            Console.ReadLine();
+        }
+
+        //Adds a node at the beginning of the list
+        static void InsertFront(List list, Node nodeToAdd)
+        {
+            //pushes the current first node to be the next node
+            nodeToAdd.nextNode = list.firstNode;
+            nodeToAdd.prevNode = null;
+
+            //changes prevNode of the firstNode to be the new node
+            if (list.firstNode != null)
+            {
+                list.firstNode.prevNode = nodeToAdd;
+            }
+
+            //the new node then becomes the first node
+            list.firstNode = nodeToAdd;
+        }
+
+        //Prints out every node in the list
+        static void ShowList(List list)
+        {
+            Node node = list.firstNode;
+            while (node != null) //Until end of list
+            {
+                Console.Write("%node.data ");
+                node = node.nextNode;
+            }
+            Console.WriteLine("");
         }
     }
 }
