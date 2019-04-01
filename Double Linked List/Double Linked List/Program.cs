@@ -42,6 +42,7 @@ namespace Double_Linked_List
             }
 
             ShowList(list);
+            LengthOfList(list);
 
             for (int i = 0; i < nodesToAdd; i++)
             {
@@ -51,6 +52,7 @@ namespace Double_Linked_List
             }
 
             ShowList(list);
+            LengthOfList(list);
 
             Console.ReadLine();
         }
@@ -66,7 +68,7 @@ namespace Double_Linked_List
             if (list.firstNode != null)
             {
                 list.firstNode.prevNode = nodeToAdd;
-            }
+            }   
 
             //the new node then becomes the first node
             list.firstNode = nodeToAdd;
@@ -99,6 +101,28 @@ namespace Double_Linked_List
             }
         }
 
+        //Inserts a node after a specific node
+        static void InsertAfter(List list, Node nodeToAdd, Node nodeBefore)
+        {
+            if (nodeBefore == null)
+            {
+                Console.WriteLine("The target node cannot be null");
+            }
+            else
+            {
+                //puts the new node in after the nodeBefore
+                nodeToAdd.nextNode = nodeBefore.nextNode;
+                nodeBefore.nextNode = nodeToAdd;
+                nodeToAdd.prevNode = nodeBefore;
+
+                //changes the previous node of the node after nodeToAdd
+                if (nodeToAdd.nextNode != null)
+                {
+                    nodeToAdd.nextNode.prevNode = nodeToAdd;
+                }
+            }
+        }
+
         //Prints out every node in the list
         static void ShowList(List list)
         {
@@ -117,6 +141,20 @@ namespace Double_Linked_List
                 node = node.nextNode;
             }
             Console.WriteLine("");
+        }
+
+        static void LengthOfList(List list)
+        {
+            int count = 0;
+            Node counter = list.firstNode;
+
+            while (counter != null)
+            {
+                count++;
+                counter = counter.nextNode;
+            }
+
+            Console.WriteLine("There are " + count + " nodes in the list.");
         }
     }
 }
