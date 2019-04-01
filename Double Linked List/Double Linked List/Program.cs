@@ -14,6 +14,11 @@ namespace Double_Linked_List
         public int data;
         public Node nextNode;
         public Node prevNode;
+
+        public Node(int d)
+        {
+            data = d; 
+        }
     }
 
     //Creating the list with the first node being saved
@@ -33,12 +38,14 @@ namespace Double_Linked_List
             Random r = new Random();                            //
             //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
 
+            //Console.WriteLine("How many nodes would you like to add?");
+            //nodesToAdd = Convert.ToInt32(Console.ReadLine());
+
             //Creates a pre-determined set of nodes
             for (int i = 0; i < nodesToAdd; i++)
             {
-                node = new Node();
-                node.data = r.Next(100);
-                InsertFront(list, node);
+                //node = new Node(r.Next(100));
+                InsertFront(list, r.Next(100));
             }
 
             ShowList(list);
@@ -46,10 +53,12 @@ namespace Double_Linked_List
 
             for (int i = 0; i < nodesToAdd; i++)
             {
-                node = new Node();
-                node.data = r.Next(100);
+                node = new Node(r.Next(100));
                 InsertBack(list, node);
             }
+
+            node = new Node(13);
+            InsertAfter(list, node, list.firstNode.nextNode.nextNode);
 
             ShowList(list);
             LengthOfList(list);
@@ -57,9 +66,28 @@ namespace Double_Linked_List
             Console.ReadLine();
         }
 
+        ////Adds a node at the beginning of a list
+        //static void InsertFront(List list, Node nodeToAdd)
+        //{
+        //    //pushes the current first node to be the next node
+        //    nodeToAdd.nextNode = list.firstNode;
+        //    nodeToAdd.prevNode = null;
+
+        //    //changes prevNode of the firstNode to be the new node
+        //    if (list.firstNode != null)
+        //    {
+        //        list.firstNode.prevNode = nodeToAdd;
+        //    }   
+
+        //    //the new node then becomes the first node
+        //    list.firstNode = nodeToAdd;
+        //}
+
         //Adds a node at the beginning of a list
-        static void InsertFront(List list, Node nodeToAdd)
+        static void InsertFront(List list, int data)
         {
+            Node nodeToAdd = new Node(data);
+
             //pushes the current first node to be the next node
             nodeToAdd.nextNode = list.firstNode;
             nodeToAdd.prevNode = null;
@@ -68,7 +96,7 @@ namespace Double_Linked_List
             if (list.firstNode != null)
             {
                 list.firstNode.prevNode = nodeToAdd;
-            }   
+            }
 
             //the new node then becomes the first node
             list.firstNode = nodeToAdd;
@@ -143,11 +171,13 @@ namespace Double_Linked_List
             Console.WriteLine("");
         }
 
+        //Prints out number of nodes in a list
         static void LengthOfList(List list)
         {
             int count = 0;
             Node counter = list.firstNode;
 
+            //adds to a counter until end of list
             while (counter != null)
             {
                 count++;
