@@ -4,7 +4,7 @@
 //Created: 21/03/19
 //Edited: JF 21/03/19
 //
-//Creating a double linked list and adding functionality to traverse it both ways and sort
+//Creating a double linked list and adding functionality
 
 namespace Double_Linked_List
 {
@@ -43,10 +43,19 @@ namespace Double_Linked_List
 
             ShowList(list);
 
+            for (int i = 0; i < nodesToAdd; i++)
+            {
+                node = new Node();
+                node.data = r.Next(100);
+                InsertBack(list, node);
+            }
+
+            ShowList(list);
+
             Console.ReadLine();
         }
 
-        //Adds a node at the beginning of the list
+        //Adds a node at the beginning of a list
         static void InsertFront(List list, Node nodeToAdd)
         {
             //pushes the current first node to be the next node
@@ -61,6 +70,33 @@ namespace Double_Linked_List
 
             //the new node then becomes the first node
             list.firstNode = nodeToAdd;
+        }
+
+        //Adds a node to the end of a list
+        static void InsertBack(List list, Node nodeToAdd)
+        {
+            //Will contain the last current node
+            Node lastNode = list.firstNode;
+
+            nodeToAdd.nextNode = null;
+
+            //if the list is empty, make this node the front
+            if (list.firstNode == null)
+            {
+                nodeToAdd.prevNode = null;
+                list.firstNode = nodeToAdd;
+            }
+            //goes to the end of the list, then alters prev and next node for the nodeToAdd
+            else
+            {
+                while (lastNode.nextNode != null)
+                {
+                    lastNode = lastNode.nextNode;
+                }
+
+                lastNode.nextNode = nodeToAdd;
+                nodeToAdd.prevNode = lastNode;
+            }
         }
 
         //Prints out every node in the list
