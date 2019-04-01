@@ -69,7 +69,15 @@ namespace Double_Linked_List
             Node node = list.firstNode;
             while (node != null) //Until end of list
             {
-                Console.Write("%node.data ");
+                if (node.nextNode != null)
+                {
+                    Console.Write(node.data + " <-> ");
+                }
+                else
+                {
+                    Console.Write(node.data);
+                }
+                
                 node = node.nextNode;
             }
             Console.WriteLine("");
