@@ -66,6 +66,9 @@ namespace Double_Linked_List
             RemoveNodeNumber(list, 4);
             ShowList(list);
 
+            SwapNodes(list, list.firstNode.nextNode, list.firstNode.nextNode.nextNode.nextNode);
+            ShowList(list);
+
             ShowTraversal(list);
 
             Console.ReadLine();
@@ -157,10 +160,10 @@ namespace Double_Linked_List
             }
         }
 
-        //Inserts a node after a specific node
+        //Inserts a node after a specific node reference
         //
         //
-        //Insert node after node reference
+        //
         //
         //
 
@@ -249,6 +252,25 @@ namespace Double_Linked_List
             }
             //returns the removed node
             return nodeToBeRemoved;
+        }
+
+        //Swaps 2 nodes - THIS NEEDS FIXING
+        static void SwapNodes(List list, Node nodeOne, Node nodeTwo)
+        {
+            Node tempOne = new Node();
+            Node tempTwo = new Node();
+
+            tempOne.nextNode = nodeOne.nextNode;
+            tempOne.prevNode = nodeOne.prevNode;
+
+            tempTwo.nextNode = nodeTwo.nextNode;
+            tempTwo.prevNode = nodeTwo.prevNode;
+
+            nodeOne.nextNode = tempTwo.nextNode;
+            nodeOne.prevNode = tempTwo.prevNode;
+
+            nodeTwo.nextNode = tempOne.nextNode;
+            nodeTwo.prevNode = tempOne.prevNode;
         }
 
         //Prints out every node in the list
