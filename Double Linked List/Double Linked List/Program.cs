@@ -58,6 +58,8 @@ namespace Double_Linked_List
             FindNodeData(list, 13);
             FindNode(list, list.firstNode.nextNode.nextNode);
 
+            ShowTraversal(list);
+
             Console.ReadLine();
         }
 
@@ -151,7 +153,7 @@ namespace Double_Linked_List
         static void ShowList(List list)
         {
             Node node = list.firstNode;
-            while (node != null) //Until end of list
+            while (node != null)
             {
                 if (node.nextNode != null)
                 {
@@ -163,6 +165,42 @@ namespace Double_Linked_List
                 }
                 
                 node = node.nextNode;
+            }
+            Console.WriteLine("");
+        }
+
+        //Prints out every node in the forwards and backwards
+        static void ShowTraversal(List list)
+        {
+            Node node = list.firstNode;
+            Node lastNode = new Node();
+            //Forward
+            while (node != null)
+            {
+                if (node.nextNode != null)
+                {
+                    Console.Write(node.data + " <-> ");
+                }
+                else
+                {
+                    Console.Write(node.data);
+                }
+                lastNode = node;
+                node = node.nextNode;
+            }
+            Console.WriteLine("");
+            //Backward
+            while (lastNode != null)
+            {
+                if (lastNode.prevNode != null)
+                {
+                    Console.Write(lastNode.data + " <-> ");
+                }
+                else
+                {
+                    Console.Write(lastNode.data);
+                }
+                lastNode = lastNode.prevNode;
             }
             Console.WriteLine("");
         }
