@@ -14,11 +14,6 @@ namespace Double_Linked_List
         public int data;
         public Node nextNode;
         public Node prevNode;
-
-        public Node(int d)
-        {
-            data = d; 
-        }
     }
 
     //Creating the list with the first node being saved
@@ -32,8 +27,8 @@ namespace Double_Linked_List
         static void Main(string[] args)
         {
             List list = new List();
-            Node node;
             int nodesToAdd = 5;
+
             //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
             Random r = new Random();                            //
             //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
@@ -41,52 +36,42 @@ namespace Double_Linked_List
             //Console.WriteLine("How many nodes would you like to add?");
             //nodesToAdd = Convert.ToInt32(Console.ReadLine());
 
-            //Creates a pre-determined set of nodes
+            //Creates a pre-determined number of nodes
             for (int i = 0; i < nodesToAdd; i++)
             {
-                //node = new Node(r.Next(100));
                 InsertFront(list, r.Next(100));
             }
 
             ShowList(list);
-            LengthOfList(list);
+            PrintLengthOfList(list);
 
             for (int i = 0; i < nodesToAdd; i++)
             {
-                node = new Node(r.Next(100));
-                InsertBack(list, node);
+                InsertBack(list, r.Next(100));
             }
 
-            node = new Node(13);
-            InsertAfter(list, node, list.firstNode.nextNode.nextNode);
+            InsertAfter(list, 13, 3);
 
             ShowList(list);
-            LengthOfList(list);
+            PrintLengthOfList(list);
+
+            FindNodeData(list, 13);
+            FindNode(list, list.firstNode.nextNode.nextNode);
 
             Console.ReadLine();
         }
 
-        ////Adds a node at the beginning of a list
-        //static void InsertFront(List list, Node nodeToAdd)
-        //{
-        //    //pushes the current first node to be the next node
-        //    nodeToAdd.nextNode = list.firstNode;
-        //    nodeToAdd.prevNode = null;
-
-        //    //changes prevNode of the firstNode to be the new node
-        //    if (list.firstNode != null)
-        //    {
-        //        list.firstNode.prevNode = nodeToAdd;
-        //    }   
-
-        //    //the new node then becomes the first node
-        //    list.firstNode = nodeToAdd;
-        //}
+        static Node CreateNode(int data)
+        {
+            Node node = new Node();
+            node.data = data;
+            return node;
+        }
 
         //Adds a node at the beginning of a list
         static void InsertFront(List list, int data)
         {
-            Node nodeToAdd = new Node(data);
+            Node nodeToAdd = CreateNode(data);
 
             //pushes the current first node to be the next node
             nodeToAdd.nextNode = list.firstNode;
@@ -103,8 +88,9 @@ namespace Double_Linked_List
         }
 
         //Adds a node to the end of a list
-        static void InsertBack(List list, Node nodeToAdd)
+        static void InsertBack(List list, int data)
         {
+            Node nodeToAdd = CreateNode(data);
             //Will contain the last current node
             Node lastNode = list.firstNode;
 
@@ -130,14 +116,24 @@ namespace Double_Linked_List
         }
 
         //Inserts a node after a specific node
-        static void InsertAfter(List list, Node nodeToAdd, Node nodeBefore)
+        static void InsertAfter(List list, int data, int nodeBeforeNumber)
         {
-            if (nodeBefore == null)
+            Node nodeToAdd = CreateNode(data);
+            Node nodeBefore = new Node();
+            nodeBefore = list.firstNode;
+
+            if (nodeBeforeNumber == 0 || nodeBeforeNumber > LengthOfList(list))
             {
                 Console.WriteLine("The target node cannot be null");
             }
             else
             {
+                //increases the nodeBefore to represent the int value that was passed in
+                for (int i = 1; i < nodeBeforeNumber; i++)
+                {
+                    nodeBefore = nodeBefore.nextNode;
+                }
+
                 //puts the new node in after the nodeBefore
                 nodeToAdd.nextNode = nodeBefore.nextNode;
                 nodeBefore.nextNode = nodeToAdd;
@@ -171,8 +167,46 @@ namespace Double_Linked_List
             Console.WriteLine("");
         }
 
+        //Finds a node based on the node data
+        static bool FindNodeData(List list, int nodeData)
+        {
+            Node nodeToCheck = list.firstNode;
+
+            for (int i = 0; i < LengthOfList(list); i++)
+            {
+                if (nodeToCheck.data == nodeData)
+                {
+                    Console.WriteLine("Node found; number: " + (i+1));
+                    return true;
+                }
+                nodeToCheck = nodeToCheck.nextNode;
+            }
+            Console.WriteLine("Node not found");
+            return false;
+        }
+
+        //Finds a node based on node passed in
+        static bool FindNode(List list, Node nodeToFind)
+        {
+            Node nodeToCheck = list.firstNode;
+            if (nodeToFind != null)
+            {
+                for (int i = 0; i < LengthOfList(list); i++)
+                {
+                    if (nodeToCheck == nodeToFind)
+                    {
+                        Console.WriteLine("Node found; number: " + (i + 1));
+                        return true;
+                    }
+                    nodeToCheck = nodeToCheck.nextNode;
+                }
+            }
+            Console.WriteLine("Node not found");
+            return false;
+        }
+
         //Prints out number of nodes in a list
-        static void LengthOfList(List list)
+        static void PrintLengthOfList(List list)
         {
             int count = 0;
             Node counter = list.firstNode;
@@ -183,8 +217,22 @@ namespace Double_Linked_List
                 count++;
                 counter = counter.nextNode;
             }
-
             Console.WriteLine("There are " + count + " nodes in the list.");
+        }
+
+        //returns number of nodes in a list
+        static int LengthOfList(List list)
+        {
+            int count = 0;
+            Node counter = list.firstNode;
+
+            //adds to a counter until end of list
+            while (counter != null)
+            {
+                count++;
+                counter = counter.nextNode;
+            }
+            return count;
         }
     }
 }
