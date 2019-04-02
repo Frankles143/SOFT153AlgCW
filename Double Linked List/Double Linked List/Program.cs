@@ -8,7 +8,7 @@
 
 namespace Double_Linked_List
 {
-    //Node class with references to the next and previous nodes in the list
+    //Node class with references to the next and previous nodes
     class Node
     {
         public int data;
@@ -57,6 +57,14 @@ namespace Double_Linked_List
 
             FindNodeData(list, 13);
             FindNode(list, list.firstNode.nextNode.nextNode);
+
+            Console.WriteLine("Remove first node:");
+            RemoveFirstNode(list);
+            ShowList(list);
+
+            Console.WriteLine("Remove 4th node:");
+            RemoveNodeNumber(list, 4);
+            ShowList(list);
 
             ShowTraversal(list);
 
@@ -149,6 +157,100 @@ namespace Double_Linked_List
             }
         }
 
+        //Inserts a node after a specific node
+        //
+        //
+        //Insert node after node reference
+        //
+        //
+
+        //Removes the first node in list
+        static Node RemoveFirstNode(List list)
+        {
+            Node nodeToBeRemoved = list.firstNode;
+
+            //Checks to make sure there are at least 2 nodes in the list
+            if (list.firstNode != null && list.firstNode.nextNode != null)
+            {
+                list.firstNode = list.firstNode.nextNode;
+                list.firstNode.prevNode = null;
+            }
+            else
+            {
+                Console.WriteLine("Cannot remove first node if no other nodes are in the list!");
+            }
+            //returns the removed node
+            return nodeToBeRemoved;
+        }
+
+        //Removes a node, given a specific node reference
+        static Node RemoveNode(List list, Node nodeToBeRemoved)
+        {
+            if (nodeToBeRemoved == list.firstNode.prevNode || nodeToBeRemoved == null)
+            {
+                Console.WriteLine("The target node cannot be null");
+            }
+            else
+            {
+                //checks to see if this is the last node
+                if (nodeToBeRemoved.nextNode == null)
+                {
+                    nodeToBeRemoved.prevNode.nextNode = null;
+                }
+
+                //checks to see if this is the first node
+                if (nodeToBeRemoved.prevNode == null)
+                {
+                    nodeToBeRemoved.nextNode.prevNode = null;
+                }
+
+                //changes the target of the next nodes prevNode and the previous nodes nextNode
+                nodeToBeRemoved.nextNode.prevNode = nodeToBeRemoved.prevNode;
+                nodeToBeRemoved.prevNode.nextNode = nodeToBeRemoved.nextNode;
+            }
+
+
+            return nodeToBeRemoved;
+        }
+
+        //Removes a specific node given node number
+        static Node RemoveNodeNumber(List list, int nodeNumber)
+        {
+            Node nodeToBeRemoved = new Node();
+
+            if (nodeNumber == 0 || nodeNumber > LengthOfList(list))
+            {
+                Console.WriteLine("The target node cannot be null");
+            }
+            else
+            {
+                //traverse to nodeToBeRemoved using the nodeNumber
+                nodeToBeRemoved = list.firstNode;
+                for (int i = 1; i < nodeNumber; i++)
+                {
+                    nodeToBeRemoved = nodeToBeRemoved.nextNode;
+                }
+
+                //checks to see if this is the last node
+                if (nodeToBeRemoved.nextNode == null)
+                {
+                    nodeToBeRemoved.prevNode.nextNode = null;
+                }
+
+                //checks to see if this is the first node
+                if (nodeToBeRemoved.prevNode == null)
+                {
+                    nodeToBeRemoved.nextNode.prevNode = null;
+                }
+
+                //changes the target of the next nodes prevNode and the previous nodes nextNode
+                nodeToBeRemoved.nextNode.prevNode = nodeToBeRemoved.prevNode;
+                nodeToBeRemoved.prevNode.nextNode = nodeToBeRemoved.nextNode;
+            }
+            //returns the removed node
+            return nodeToBeRemoved;
+        }
+
         //Prints out every node in the list
         static void ShowList(List list)
         {
@@ -175,6 +277,7 @@ namespace Double_Linked_List
             Node node = list.firstNode;
             Node lastNode = new Node();
             //Forward
+            Console.WriteLine("Forward list");
             while (node != null)
             {
                 if (node.nextNode != null)
@@ -190,6 +293,7 @@ namespace Double_Linked_List
             }
             Console.WriteLine("");
             //Backward
+            Console.WriteLine("Backward list");
             while (lastNode != null)
             {
                 if (lastNode.prevNode != null)
