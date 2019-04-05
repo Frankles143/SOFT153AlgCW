@@ -254,23 +254,50 @@ namespace Double_Linked_List
             return nodeToBeRemoved;
         }
 
-        //Swaps 2 nodes - THIS NEEDS FIXING
+        //Swaps 2 nodes
         static void SwapNodes(List list, Node nodeOne, Node nodeTwo)
         {
-            Node tempOne = new Node();
-            Node tempTwo = new Node();
+            Node tempNext = new Node();
+            Node tempPrev = new Node();
 
-            tempOne.nextNode = nodeOne.nextNode;
-            tempOne.prevNode = nodeOne.prevNode;
+            Console.WriteLine("2 nodes will be swapped: ");
+            if (nodeOne != null && nodeTwo != null)
+            {
+                
+                tempNext = nodeOne.nextNode;
 
-            tempTwo.nextNode = nodeTwo.nextNode;
-            tempTwo.prevNode = nodeTwo.prevNode;
+                //FIX THIS
 
-            nodeOne.nextNode = tempTwo.nextNode;
-            nodeOne.prevNode = tempTwo.prevNode;
+                //change nextNode references
+                nodeOne.nextNode = nodeTwo.nextNode;
+                nodeTwo.nextNode = tempNext;
 
-            nodeTwo.nextNode = tempOne.nextNode;
-            nodeTwo.prevNode = tempOne.prevNode;
+                tempNext = nodeOne.nextNode.nextNode;
+                nodeOne.nextNode.nextNode = nodeTwo.nextNode.nextNode;
+                nodeTwo.nextNode.nextNode = tempNext;
+
+                //change prevNode references
+                tempPrev = nodeOne.prevNode;
+                nodeOne.prevNode = nodeTwo.prevNode;
+                nodeTwo.prevNode = tempPrev;
+
+                tempPrev = nodeOne.prevNode.prevNode;
+                nodeOne.prevNode.prevNode = nodeTwo.prevNode.prevNode;
+                nodeTwo.prevNode.prevNode = tempPrev;
+
+            }
+
+            //tempOne.nextNode = nodeOne.nextNode;
+            //tempOne.prevNode = nodeOne.prevNode;
+
+            //tempTwo.nextNode = nodeTwo.nextNode;
+            //tempTwo.prevNode = nodeTwo.prevNode;
+
+            //nodeOne.nextNode = tempTwo.nextNode;
+            //nodeOne.prevNode = tempTwo.prevNode;
+
+            //nodeTwo.nextNode = tempOne.nextNode;
+            //nodeTwo.prevNode = tempOne.prevNode;
         }
 
         //Prints out every node in the list
