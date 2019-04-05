@@ -255,49 +255,61 @@ namespace Double_Linked_List
         }
 
         //Swaps 2 nodes
-        static void SwapNodes(List list, Node nodeOne, Node nodeTwo)
+        static void SwapNodes(List list, Node nodeOne, Node nodeTwo) //b //f
         {
-            Node tempNext = new Node();
-            Node tempPrev = new Node();
+            Node nodeOnePrev = nodeOne.prevNode; //a
+            Node nodeOneNext = nodeOne.nextNode; //c
+
+            Node nodeTwoPrev = nodeTwo.prevNode; //e
+            Node nodeTwoNext = nodeTwo.nextNode; //g
 
             Console.WriteLine("2 nodes will be swapped: ");
-            if (nodeOne != null && nodeTwo != null)
+
+            //check if either nodes are the first in list, if so, update the firstnode
+            if (list.firstNode == nodeOne)
             {
-                
-                tempNext = nodeOne.nextNode;
-
-                //FIX THIS
-
-                //change nextNode references
-                nodeOne.nextNode = nodeTwo.nextNode;
-                nodeTwo.nextNode = tempNext;
-
-                tempNext = nodeOne.nextNode.nextNode;
-                nodeOne.nextNode.nextNode = nodeTwo.nextNode.nextNode;
-                nodeTwo.nextNode.nextNode = tempNext;
-
-                //change prevNode references
-                tempPrev = nodeOne.prevNode;
-                nodeOne.prevNode = nodeTwo.prevNode;
-                nodeTwo.prevNode = tempPrev;
-
-                tempPrev = nodeOne.prevNode.prevNode;
-                nodeOne.prevNode.prevNode = nodeTwo.prevNode.prevNode;
-                nodeTwo.prevNode.prevNode = tempPrev;
-
+                list.firstNode = nodeTwo;
+            }
+            else if (list.firstNode == nodeTwo)
+            {
+                list.firstNode = nodeOne;
             }
 
-            //tempOne.nextNode = nodeOne.nextNode;
-            //tempOne.prevNode = nodeOne.prevNode;
+            if (nodeOnePrev != null)
+            {
+                nodeOnePrev.nextNode = nodeTwo;
+            }
 
-            //tempTwo.nextNode = nodeTwo.nextNode;
-            //tempTwo.prevNode = nodeTwo.prevNode;
+            nodeTwo.prevNode = nodeOnePrev;
+            nodeTwo.nextNode = nodeOneNext;
 
-            //nodeOne.nextNode = tempTwo.nextNode;
-            //nodeOne.prevNode = tempTwo.prevNode;
+            if (nodeOneNext != null)
+            {
+                nodeOneNext.prevNode = nodeTwo;
+            }
 
-            //nodeTwo.nextNode = tempOne.nextNode;
-            //nodeTwo.prevNode = tempOne.prevNode;
+            if (nodeTwoPrev != null)
+            {
+                nodeTwoPrev.nextNode = nodeOne;
+            }
+
+            nodeOne.prevNode = nodeTwoPrev;
+            nodeOne.nextNode = nodeTwoNext;
+
+            if (nodeTwoNext != null)
+            {
+                nodeTwoNext.prevNode = nodeOne;
+            }
+
+            //if (list.lastNode == nodeOne)
+            //{
+            //    list.lastNode = nodeTwo;
+            //}
+            //else if (list.lastNode == nodeTwo)
+            //{
+            //   list.lastNode = nodeOne;
+            //}
+
         }
 
         //Prints out every node in the list
