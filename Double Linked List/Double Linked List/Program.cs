@@ -342,6 +342,31 @@ namespace Double_Linked_List
 
         }
 
+        static void InsertionSort(List list)
+        {
+            Node node = list.firstNode.nextNode, firstNode = list.firstNode;
+
+            //double for loop instead??
+
+            while (node.nextNode != null)
+            {
+                firstNode = list.firstNode;
+
+                if (node.data > node.nextNode.data)
+                {
+                    if (node.data < firstNode.data)
+                    {
+                        //InsertBefore();
+                    }
+                    else
+                    {
+                        firstNode = firstNode.nextNode;
+                    }
+                }
+                node = node.nextNode;
+            }
+        }
+
         //Prints out every node in the list
         static void ShowList(List list)
         {
