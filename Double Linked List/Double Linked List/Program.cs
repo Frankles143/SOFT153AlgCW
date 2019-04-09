@@ -27,6 +27,7 @@ namespace Double_Linked_List
         static void Main(string[] args)
         {
             List list = new List();
+            List listTwo = new List();
             int nodesToAdd = 5;
 
             //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
@@ -40,6 +41,7 @@ namespace Double_Linked_List
             for (int i = 0; i < nodesToAdd; i++)
             {
                 InsertFront(list, r.Next(100));
+                InsertFront(listTwo, r.Next(100));
             }
 
             ShowList(list);
@@ -66,8 +68,15 @@ namespace Double_Linked_List
             RemoveNodeNumber(list, 4);
             ShowList(list);
 
-            SwapNodes(list, list.firstNode.nextNode, list.firstNode.nextNode.nextNode.nextNode);
+            Console.WriteLine("2 nodes will be swapped: ");
+            SwapNodes(list, list.firstNode.nextNode, list.firstNode.nextNode.nextNode.nextNode.nextNode.nextNode);
             ShowList(list);
+
+            Console.WriteLine("Add another list onto the end");
+            AppendList(list, listTwo);
+            ShowList(list);
+
+            Console.WriteLine("");
 
             ShowTraversal(list);
 
@@ -126,6 +135,20 @@ namespace Double_Linked_List
                 lastNode.nextNode = nodeToAdd;
                 nodeToAdd.prevNode = lastNode;
             }
+        }
+
+        //Appends listTwo on the end of listOne 
+        static void AppendList(List listOne, List listTwo)
+        {
+            Node listOneLastNode = listOne.firstNode;
+
+            while (listOneLastNode.nextNode != null)
+            {
+                listOneLastNode = listOneLastNode.nextNode;
+            }
+
+            listOneLastNode.nextNode = listTwo.firstNode;
+            listTwo.firstNode.prevNode = listOneLastNode;
         }
 
         //Inserts a node after a specific node
@@ -255,15 +278,13 @@ namespace Double_Linked_List
         }
 
         //Swaps 2 nodes
-        static void SwapNodes(List list, Node nodeOne, Node nodeTwo) //b //f
+        static void SwapNodes(List list, Node nodeOne, Node nodeTwo)
         {
-            Node nodeOnePrev = nodeOne.prevNode; //a
-            Node nodeOneNext = nodeOne.nextNode; //c
+            Node nodeOnePrev = nodeOne.prevNode; 
+            Node nodeOneNext = nodeOne.nextNode; 
 
-            Node nodeTwoPrev = nodeTwo.prevNode; //e
-            Node nodeTwoNext = nodeTwo.nextNode; //g
-
-            Console.WriteLine("2 nodes will be swapped: ");
+            Node nodeTwoPrev = nodeTwo.prevNode;
+            Node nodeTwoNext = nodeTwo.nextNode; 
 
             //check if either nodes are the first in list, if so, update the firstnode
             if (list.firstNode == nodeOne)
@@ -300,15 +321,6 @@ namespace Double_Linked_List
             {
                 nodeTwoNext.prevNode = nodeOne;
             }
-
-            //if (list.lastNode == nodeOne)
-            //{
-            //    list.lastNode = nodeTwo;
-            //}
-            //else if (list.lastNode == nodeTwo)
-            //{
-            //   list.lastNode = nodeOne;
-            //}
 
         }
 
