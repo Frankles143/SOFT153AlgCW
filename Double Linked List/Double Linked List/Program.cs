@@ -57,7 +57,7 @@ namespace Double_Linked_List
             ShowList(list);
             PrintLengthOfList(list);
 
-            FindNodeData(list, 13);
+            FindNode(list, 13);
             FindNode(list, list.firstNode.nextNode.nextNode);
 
             Console.WriteLine("Remove first node:");
@@ -65,7 +65,7 @@ namespace Double_Linked_List
             ShowList(list);
 
             Console.WriteLine("Remove 4th node:");
-            RemoveNodeNumber(list, 4);
+            RemoveNode(list, 4);
             ShowList(list);
 
             Console.WriteLine("2 nodes will be swapped: ");
@@ -83,6 +83,7 @@ namespace Double_Linked_List
             Console.ReadLine();
         }
 
+        //Creates a node with data
         static Node CreateNode(int data)
         {
             Node node = new Node();
@@ -184,11 +185,28 @@ namespace Double_Linked_List
         }
 
         //Inserts a node after a specific node reference
-        //
-        //
-        //
-        //
-        //
+        static void InsertAfter(List list, int data, Node nodeBefore)
+        {
+            Node nodeToAdd = CreateNode(data);
+
+            if (nodeBefore == null)
+            {
+                Console.WriteLine("The target node cannot be null");
+            }
+            else
+            {
+                //puts the new node in after the nodeBefore
+                nodeToAdd.nextNode = nodeBefore.nextNode;
+                nodeBefore.nextNode = nodeToAdd;
+                nodeToAdd.prevNode = nodeBefore;
+
+                //changes the previous node of the node after nodeToAdd
+                if (nodeToAdd.nextNode != null)
+                {
+                    nodeToAdd.nextNode.prevNode = nodeToAdd;
+                }
+            }
+        }
 
         //Removes the first node in list
         static Node RemoveFirstNode(List list)
@@ -240,7 +258,7 @@ namespace Double_Linked_List
         }
 
         //Removes a specific node given node number
-        static Node RemoveNodeNumber(List list, int nodeNumber)
+        static Node RemoveNode(List list, int nodeNumber)
         {
             Node nodeToBeRemoved = new Node();
 
@@ -383,7 +401,7 @@ namespace Double_Linked_List
         }
 
         //Finds a node based on the node data
-        static bool FindNodeData(List list, int nodeData)
+        static bool FindNode(List list, int nodeData)
         {
             Node nodeToCheck = list.firstNode;
 
