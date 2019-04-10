@@ -348,23 +348,23 @@ namespace Double_Linked_List
 
             //double for loop instead??
 
-            while (node.nextNode != null)
-            {
-                firstNode = list.firstNode;
+        //    while (node.nextNode != null)
+        //    {
+        //        firstNode = list.firstNode;
 
-                if (node.data > node.nextNode.data)
-                {
-                    if (node.data < firstNode.data)
-                    {
-                        //InsertBefore();
-                    }
-                    else
-                    {
-                        firstNode = firstNode.nextNode;
-                    }
-                }
-                node = node.nextNode;
-            }
+        //        if (node.data > node.nextNode.data)
+        //        {
+        //            if (node.data < firstNode.data)
+        //            {
+        //                //InsertBefore();
+        //            }
+        //            else
+        //            {
+        //                firstNode = firstNode.nextNode;
+        //            }
+        //        }
+        //        node = node.nextNode;
+        //    }
         }
 
         //Prints out every node in the list
