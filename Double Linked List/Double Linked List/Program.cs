@@ -76,6 +76,10 @@ namespace Double_Linked_List
             AppendList(list, listTwo);
             ShowList(list);
 
+            Console.WriteLine("Sort the list: ");
+            InsertionSort(list);
+            ShowList(list);
+
             Console.WriteLine("");
 
             ShowTraversal(list);
@@ -342,29 +346,76 @@ namespace Double_Linked_List
 
         }
 
+        //Sorts a given list by node data
         static void InsertionSort(List list)
         {
-            Node node = list.firstNode.nextNode, firstNode = list.firstNode;
+            Node currentNode = list.firstNode;
+            List sortedList = new List();
 
-            //double for loop instead??
+            //Until end of list
+            while (currentNode!= null)
+            {
+                Node next = currentNode.nextNode;
 
-        //    while (node.nextNode != null)
-        //    {
-        //        firstNode = list.firstNode;
+                //Clear links to old list
+                currentNode.nextNode = null;
+                currentNode.prevNode = null;
 
-        //        if (node.data > node.nextNode.data)
-        //        {
-        //            if (node.data < firstNode.data)
-        //            {
-        //                //InsertBefore();
-        //            }
-        //            else
-        //            {
-        //                firstNode = firstNode.nextNode;
-        //            }
-        //        }
-        //        node = node.nextNode;
-        //    }
+                //Run a sort function
+                InsertSorted(sortedList, currentNode);
+
+                currentNode = next;
+            }
+            list.firstNode = sortedList.firstNode;
+            ShowList(sortedList);
+        }
+
+        //Insert a node into a list, sorted by it's data
+        static void InsertSorted(List list, Node node)
+        {
+            Node currentNode = new Node();
+
+            //If the list is empty make it the first node
+            if (list.firstNode == null)
+            {
+                list.firstNode = node;
+            }
+            //If the data is less than the current first node, make it the firstnode
+            else if (list.firstNode.data >= node.data)
+            {
+                node.nextNode = list.firstNode;
+                node.nextNode.prevNode = node;
+                list.firstNode = node;
+            }
+            //Anything else:
+            else
+            {
+                currentNode = list.firstNode;
+
+                //Find the place in the list the node needs to be inserted
+                while (currentNode.nextNode != null)
+                {
+                    if (node.data < currentNode.nextNode.data)
+                    {
+                        //Link up the node
+                        node.nextNode = currentNode.nextNode;
+                        node.nextNode.prevNode = node;
+                        currentNode.nextNode = node;
+                        node.prevNode = currentNode;
+
+                        break;
+                    }
+                    //Checks to see if the data is bigger than the last node in list
+                    else if (node.data > currentNode.nextNode.data && currentNode.nextNode.nextNode == null)
+                    {
+                        node.nextNode = null;
+                        currentNode.nextNode.nextNode = node;
+                        node.prevNode = currentNode.nextNode;
+                    }
+
+                    currentNode = currentNode.nextNode;
+                }
+            }
         }
 
         //Prints out every node in the list
