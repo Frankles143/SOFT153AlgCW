@@ -367,7 +367,6 @@ namespace Double_Linked_List
                 currentNode = next;
             }
             list.firstNode = sortedList.firstNode;
-            ShowList(sortedList);
         }
 
         //Insert a node into a list, sorted by it's data
@@ -392,12 +391,11 @@ namespace Double_Linked_List
             {
                 currentNode = list.firstNode;
 
-                //Find the place in the list the node needs to be inserted
                 while (currentNode.nextNode != null)
                 {
+                    //Find the place in the list the node needs to be inserted
                     if (node.data < currentNode.nextNode.data)
                     {
-                        //Link up the node
                         node.nextNode = currentNode.nextNode;
                         node.nextNode.prevNode = node;
                         currentNode.nextNode = node;
@@ -416,6 +414,12 @@ namespace Double_Linked_List
                     currentNode = currentNode.nextNode;
                 }
             }
+        }
+
+        //Quicksort
+        static void Quicksort()
+        {
+
         }
 
         //Prints out every node in the list
