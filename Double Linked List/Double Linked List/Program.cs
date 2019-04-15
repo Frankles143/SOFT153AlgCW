@@ -28,6 +28,7 @@ namespace Double_Linked_List
         {
             List list = new List();
             List listTwo = new List();
+            List listQuick = new List();
             int nodesToAdd = 5;
 
             //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
@@ -51,6 +52,14 @@ namespace Double_Linked_List
             {
                 InsertBack(list, r.Next(100));
             }
+
+            InsertBack(listQuick, 9);
+            InsertBack(listQuick, 2);
+            InsertBack(listQuick, 6);
+            InsertBack(listQuick, 4);
+            InsertBack(listQuick, 3);
+            InsertBack(listQuick, 5);
+            InsertBack(listQuick, 1);
 
             InsertAfter(list, 13, 3);
 
@@ -76,9 +85,11 @@ namespace Double_Linked_List
             AppendList(list, listTwo);
             ShowList(list);
 
-            Console.WriteLine("Sort the list: ");
-            InsertionSort(list);
-            ShowList(list);
+            Console.WriteLine("Sorting the list... ");
+            //InsertionSort(list);
+            Quicksort(listQuick);
+            Console.WriteLine("Sorted!");
+            ShowList(listQuick);
 
             Console.WriteLine("");
 
@@ -416,10 +427,92 @@ namespace Double_Linked_List
             }
         }
 
-        //Quicksort
-        static void Quicksort()
+        //Recursive Quicksort
+        static void Quicksort(List list)
         {
+            Quicksort(list, list.firstNode, LastNode(list));
+        }
 
+        static void Quicksort(List list, Node left, Node right)
+        {
+            ShowList(list);
+
+            int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
+
+            if (leftNumber >= rightNumber)
+            {
+                return;
+            }
+
+            Node pivot = list.firstNode;
+            int pivotNumber = (leftNumber + rightNumber) / 2;
+            //Grab a pivot node at about the half way point
+            for (int i = 1; i < pivotNumber; i++)
+            {
+                pivot = pivot.nextNode;
+            }
+
+            //Find the partition point of the list after swapping nodes
+            Node partitionNode = PartitionNode(list, left, right, pivot);
+
+            //Run quicksort on either side of the list
+            Quicksort(list, left, partitionNode.prevNode);
+            Quicksort(list, partitionNode, right);
+        }
+
+        //Return the partition point and swap appropriate nodes
+        static Node PartitionNode(List list, Node left, Node right, Node pivot)
+        {
+            //int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
+            while (FindNodeNumber(list, left) <= FindNodeNumber(list, right))
+            {
+                //Increase the left pointer until left value is less than pivot value
+                while (left.data < pivot.data && left.nextNode != null)
+                {
+                    left = left.nextNode;
+                }
+
+                //Decrease the right pointer until right value is greater than pivot value
+                while (right.data > pivot.data && right.prevNode != null)
+                {
+                    right = right.prevNode;
+                }
+
+                //Swap the nodes to appropriate sides of the pivot
+                if (left.data >= right.data)
+                {
+                    Node tempLeft = left, tempRight = right;
+                    SwapNodes(list, left, right);
+                    //left = tempLeft;
+                    //right = tempRight;
+
+                    //if (left.nextNode != null)
+                    //{
+                        left = left.nextNode;
+                    //}
+
+                    //if (right.prevNode != null)
+                    //{
+                        right = right.prevNode;
+                    //}
+
+                    Console.WriteLine("Swapped");
+                }
+            }
+            return left;
+        }
+
+        //Returns last node in list
+        static Node LastNode(List list)
+        {
+            Node node = list.firstNode;
+
+            while (node.nextNode != null)
+            {
+                node = node.nextNode;
+            }
+
+            return node;
         }
 
         //Prints out every node in the list
@@ -484,8 +577,9 @@ namespace Double_Linked_List
         static bool FindNode(List list, int nodeData)
         {
             Node nodeToCheck = list.firstNode;
+            int length = LengthOfList(list);
 
-            for (int i = 0; i < LengthOfList(list); i++)
+            for (int i = 0; i < length; i++)
             {
                 if (nodeToCheck.data == nodeData)
                 {
@@ -502,9 +596,10 @@ namespace Double_Linked_List
         static bool FindNode(List list, Node nodeToFind)
         {
             Node nodeToCheck = list.firstNode;
+            int length = LengthOfList(list);
             if (nodeToFind != null)
             {
-                for (int i = 0; i < LengthOfList(list); i++)
+                for (int i = 0; i < length; i++)
                 {
                     if (nodeToCheck == nodeToFind)
                     {
@@ -516,6 +611,25 @@ namespace Double_Linked_List
             }
             Console.WriteLine("Node not found");
             return false;
+        }
+
+        //Finds a node based on node passed in
+        static int FindNodeNumber(List list, Node nodeToFind)
+        {
+            Node nodeToCheck = list.firstNode;
+            int length = LengthOfList(list);
+            if (nodeToFind != null)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    if (nodeToCheck == nodeToFind)
+                    {
+                        return i;
+                    }
+                    nodeToCheck = nodeToCheck.nextNode;
+                }
+            }
+            return -1;
         }
 
         //Prints out number of nodes in a list
