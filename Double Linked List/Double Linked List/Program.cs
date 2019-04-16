@@ -439,7 +439,7 @@ namespace Double_Linked_List
 
             int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
 
-            if (leftNumber >= rightNumber)
+            if (leftNumber >= rightNumber || left == right || left == null || right == null)
             {
                 return;
             }
@@ -453,21 +453,21 @@ namespace Double_Linked_List
             }
 
             //Find the partition point of the list after swapping nodes
-            Node partitionNode = PartitionNode(list, left, right, pivot);
+            Node partitionNode = QuicksortPartition(list, left, right, pivot);
 
             //Run quicksort on either side of the list
             Quicksort(list, left, partitionNode.prevNode);
-            Quicksort(list, partitionNode, right);
+            Quicksort(list, partitionNode.nextNode, right);
         }
 
         //Return the partition point and swap appropriate nodes
-        static Node PartitionNode(List list, Node left, Node right, Node pivot)
+        static Node QuicksortPartition(List list, Node left, Node right, Node pivot)
         {
             //int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
             while (FindNodeNumber(list, left) <= FindNodeNumber(list, right))
             {
                 //Increase the left pointer until left value is less than pivot value
-                while (left.data < pivot.data && left.nextNode != null)
+                while (left.data < pivot.data && left != null)
                 {
                     left = left.nextNode;
                 }
