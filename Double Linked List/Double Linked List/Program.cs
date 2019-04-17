@@ -472,9 +472,6 @@ namespace Double_Linked_List
         {
             Node leftPointer, rightPointer = right.prevNode, pivot = right;
 
-            //int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
-            //while (FindNodeNumber(list, leftPointer) != FindNodeNumber(list, rightPointer))
-
             //Continue as long as the leftPointer does not reach the right pointer
             for (leftPointer = left; leftPointer != rightPointer; leftPointer = leftPointer.nextNode) 
             {
@@ -487,6 +484,7 @@ namespace Double_Linked_List
                         rightPointer = rightPointer.prevNode;
                     }
 
+                    //If the pivot is larger than all the other numbers in the list
                     if (rightPointer.data > pivot.data && rightPointer == leftPointer)
                     {
                         Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
@@ -500,7 +498,9 @@ namespace Double_Linked_List
                         pivot = LastNode(list);
 
                         leftPointer = tempRightPointer;
-                        rightPointer = tempLeftPointer;
+                        rightPointer = pivot;
+
+                        break;
                     }
 
                     //break if the pointers are the same
