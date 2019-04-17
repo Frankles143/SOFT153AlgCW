@@ -58,8 +58,8 @@ namespace Double_Linked_List
             InsertBack(listQuick, 6);
             InsertBack(listQuick, 4);
             InsertBack(listQuick, 3);
-            InsertBack(listQuick, 5);
             InsertBack(listQuick, 1);
+            InsertBack(listQuick, 5);
 
             InsertAfter(list, 13, 3);
 
@@ -329,6 +329,7 @@ namespace Double_Linked_List
                 list.firstNode = nodeOne;
             }
 
+            //Checks if nodeOne is the first node
             if (nodeOnePrev != null)
             {
                 nodeOnePrev.nextNode = nodeTwo;
@@ -337,11 +338,13 @@ namespace Double_Linked_List
             nodeTwo.prevNode = nodeOnePrev;
             nodeTwo.nextNode = nodeOneNext;
 
+            //Checks if nodeOne is the last node
             if (nodeOneNext != null)
             {
                 nodeOneNext.prevNode = nodeTwo;
             }
 
+            //Checks if nodeTwo is the first node
             if (nodeTwoPrev != null)
             {
                 nodeTwoPrev.nextNode = nodeOne;
@@ -350,6 +353,7 @@ namespace Double_Linked_List
             nodeOne.prevNode = nodeTwoPrev;
             nodeOne.nextNode = nodeTwoNext;
 
+            //Checks if nodeTwo is the last node
             if (nodeTwoNext != null)
             {
                 nodeTwoNext.prevNode = nodeOne;
@@ -437,69 +441,99 @@ namespace Double_Linked_List
         {
             ShowList(list);
 
+            //Find out which numnber node the left and right nodes are
             int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
 
+            //Don't continue if either are null or left has reached right
             if (leftNumber >= rightNumber || left == right || left == null || right == null)
             {
                 return;
             }
 
-            Node pivot = list.firstNode;
-            int pivotNumber = (leftNumber + rightNumber) / 2;
-            //Grab a pivot node at about the half way point
-            for (int i = 1; i < pivotNumber; i++)
-            {
-                pivot = pivot.nextNode;
-            }
+            //Make the pivot node the last node
+            
+            //int pivotNumber = (leftNumber + rightNumber) / 2;
+            ////Grab a pivot node at about the half way point
+            //for (int i = 1; i < pivotNumber; i++)
+            //{
+            //    pivot = pivot.nextNode;
+            //}
 
             //Find the partition point of the list after swapping nodes
-            Node partitionNode = QuicksortPartition(list, left, right, pivot);
+            Node partitionNode = QuicksortPartition(list, left, right);
 
             //Run quicksort on either side of the list
-            Quicksort(list, left, partitionNode.prevNode);
-            Quicksort(list, partitionNode.nextNode, right);
+            Quicksort(list, left, partitionNode);
+            Quicksort(list, partitionNode, right);
         }
 
         //Return the partition point and swap appropriate nodes
-        static Node QuicksortPartition(List list, Node left, Node right, Node pivot)
+        static Node QuicksortPartition(List list, Node left, Node right)
         {
+            Node leftPointer, rightPointer = right.prevNode, pivot = right;
+
             //int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
-            while (FindNodeNumber(list, left) <= FindNodeNumber(list, right))
+            //while (FindNodeNumber(list, leftPointer) != FindNodeNumber(list, rightPointer))
+
+            //Continue as long as the leftPointer does not reach the right pointer
+            for (leftPointer = left; leftPointer != rightPointer; leftPointer = leftPointer.nextNode) 
             {
-                //Increase the left pointer until left value is less than pivot value
-                while (left.data < pivot.data && left != null)
+                //Carry on if the leftPointer is greater than the pivot
+                if (leftPointer.data > pivot.data)
                 {
-                    left = left.nextNode;
-                }
+                    //Cycle the right pointer until right pointer is a node that is less than pivot
+                    while (rightPointer.data > pivot.data && leftPointer != rightPointer)
+                    {
+                        rightPointer = rightPointer.prevNode;
+                    }
 
-                //Decrease the right pointer until right value is greater than pivot value
-                while (right.data > pivot.data && right.prevNode != null)
-                {
-                    right = right.prevNode;
-                }
+                    if (rightPointer.data > pivot.data && rightPointer == leftPointer)
+                    {
+                        Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
 
-                //Swap the nodes to appropriate sides of the pivot
-                if (left.data >= right.data)
-                {
-                    Node tempLeft = left, tempRight = right;
-                    SwapNodes(list, left, right);
-                    //left = tempLeft;
-                    //right = tempRight;
+                        if (leftPointer == left)
+                        {
+                            left = rightPointer;
+                        }
 
-                    //if (left.nextNode != null)
-                    //{
-                        left = left.nextNode;
-                    //}
+                        SwapNodes(list, leftPointer, pivot);
+                        pivot = LastNode(list);
 
-                    //if (right.prevNode != null)
-                    //{
-                        right = right.prevNode;
-                    //}
+                        leftPointer = tempRightPointer;
+                        rightPointer = tempLeftPointer;
+                    }
 
-                    Console.WriteLine("Swapped");
+                    //break if the pointers are the same
+                    if (leftPointer != rightPointer)
+                    {
+                        if (leftPointer == left)
+                        {
+                            left = rightPointer;
+                        }
+
+                        Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
+
+                        SwapNodes(list, leftPointer, rightPointer);
+
+                        leftPointer = tempRightPointer;
+                        rightPointer = tempLeftPointer;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
-            return left;
+
+            if (leftPointer.data <= pivot.data)
+            {
+                return leftPointer;
+            }
+
+            //SwapNodes(list, leftPointer, pivot);
+            right = leftPointer;
+
+            return leftPointer;
         }
 
         //Returns last node in list
@@ -617,19 +651,26 @@ namespace Double_Linked_List
         static int FindNodeNumber(List list, Node nodeToFind)
         {
             Node nodeToCheck = list.firstNode;
-            int length = LengthOfList(list);
-            if (nodeToFind != null)
+            int length = LengthOfList(list), count = 1;
+
+            while (nodeToCheck != nodeToFind)
             {
-                for (int i = 0; i < length; i++)
-                {
-                    if (nodeToCheck == nodeToFind)
-                    {
-                        return i;
-                    }
-                    nodeToCheck = nodeToCheck.nextNode;
-                }
+                nodeToCheck = nodeToCheck.nextNode;
+                count++;
             }
-            return -1;
+
+            //if (nodeToFind != null)
+            //{
+                //for (i = 1; i < length; i++)
+                //{
+                //    if (nodeToCheck == nodeToFind)
+                //    {
+                //        return i;
+                //    }
+                //    nodeToCheck = nodeToCheck.nextNode;
+                //}
+            //}
+            return count;
         }
 
         //Prints out number of nodes in a list
