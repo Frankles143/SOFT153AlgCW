@@ -88,9 +88,9 @@ namespace Double_Linked_List
             Console.WriteLine("Sorting the list... ");
             ShowList(listQuick);
             //InsertionSort(list);
-            Quicksort(listQuick);
+            Quicksort(list);
             Console.WriteLine("Sorted!");
-            ShowList(listQuick);
+            ShowList(list);
 
             Console.WriteLine("");
 
@@ -487,12 +487,13 @@ namespace Double_Linked_List
         static void Quicksort(List list)
         {
             //Change back
-            Node lastNode = LastNode(list);
-            Quicksort(list, list.firstNode, lastNode);
+            Quicksort(list, list.firstNode, LastNode(list));
         }
 
         static void Quicksort(List list, Node left, Node right)
         {
+            ShowList(list);
+
             //Find out which numnber node the left and right nodes are
             int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
 
@@ -521,7 +522,7 @@ namespace Double_Linked_List
                 //Carry on if the leftPointer is greater than the pivot
                 if (leftPointer.data > pivot.data)
                 {
-                    //Cycle the right pointer until right pointer is a node that is less than pivot
+                    //Cycle the right pointer until it is a node that is less than the pivot
                     while (rightPointer.data > pivot.data && leftPointer != rightPointer)
                     {
                         rightPointer = rightPointer.prevNode;
@@ -530,10 +531,10 @@ namespace Double_Linked_List
                     //break if the pointers are the same
                     if (leftPointer != rightPointer)
                     {
-                        //if (leftPointer == left)
-                        //{
-                        //    left = rightPointer;
-                        //}
+                        if (leftPointer == left)
+                        {
+                            left = rightPointer;
+                        }
 
                         Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
 
@@ -547,6 +548,15 @@ namespace Double_Linked_List
                         break;
                     }
                 }
+            }
+
+            //If the pivot is larger than all the other numbers in the list
+            if (pivot.data > leftPointer.data && pivot.data > rightPointer.data)
+            {
+                SwapNodes(list, pivot, leftPointer);
+
+                pivot = LastNode(list);
+                
             }
 
             if (left.nextNode == right && left.data <= right.data)
