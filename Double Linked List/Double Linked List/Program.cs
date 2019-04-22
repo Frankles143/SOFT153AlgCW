@@ -53,13 +53,13 @@ namespace Double_Linked_List
                 InsertBack(list, r.Next(100));
             }
 
-            InsertBack(listQuick, 9);
-            InsertBack(listQuick, 2);
+            InsertBack(listQuick, 25);
+            InsertBack(listQuick, 36);
             InsertBack(listQuick, 6);
-            InsertBack(listQuick, 4);
-            InsertBack(listQuick, 3);
-            InsertBack(listQuick, 1);
-            InsertBack(listQuick, 5);
+            InsertBack(listQuick, 48);
+            InsertBack(listQuick, 12);
+            InsertBack(listQuick, 9);
+            InsertBack(listQuick, 52);
 
             InsertAfter(list, 13, 3);
 
@@ -86,6 +86,7 @@ namespace Double_Linked_List
             ShowList(list);
 
             Console.WriteLine("Sorting the list... ");
+            ShowList(listQuick);
             //InsertionSort(list);
             Quicksort(listQuick);
             Console.WriteLine("Sorted!");
@@ -313,52 +314,103 @@ namespace Double_Linked_List
         //Swaps 2 nodes
         static void SwapNodes(List list, Node nodeOne, Node nodeTwo)
         {
-            Node nodeOnePrev = nodeOne.prevNode; 
-            Node nodeOneNext = nodeOne.nextNode; 
+            Node nodeOnePrev = nodeOne.prevNode;
+            Node nodeOneNext = nodeOne.nextNode;
 
             Node nodeTwoPrev = nodeTwo.prevNode;
-            Node nodeTwoNext = nodeTwo.nextNode; 
+            Node nodeTwoNext = nodeTwo.nextNode;
 
-            //check if either nodes are the first in list, if so, update the firstnode
-            if (list.firstNode == nodeOne)
-            {
-                list.firstNode = nodeTwo;
-            }
-            else if (list.firstNode == nodeTwo)
-            {
-                list.firstNode = nodeOne;
-            }
+            
 
-            //Checks if nodeOne is the first node
-            if (nodeOnePrev != null)
+            //Checks if the nodes are adjacent
+            if (nodeOne.nextNode == nodeTwo)
             {
+                nodeOne.nextNode = nodeTwoNext;
+                nodeOne.prevNode = nodeTwo;
+
+                nodeTwo.nextNode = nodeOne;
+                nodeTwo.prevNode = nodeOnePrev;
+
                 nodeOnePrev.nextNode = nodeTwo;
             }
-
-            nodeTwo.prevNode = nodeOnePrev;
-            nodeTwo.nextNode = nodeOneNext;
-
-            //Checks if nodeOne is the last node
-            if (nodeOneNext != null)
+            else if (nodeTwo.nextNode == nodeOne)
             {
-                nodeOneNext.prevNode = nodeTwo;
-            }
+                nodeTwo.nextNode = nodeOneNext;
+                nodeTwo.prevNode = nodeOne;
 
-            //Checks if nodeTwo is the first node
-            if (nodeTwoPrev != null)
-            {
+                nodeOne.nextNode = nodeTwo;
+                nodeOne.prevNode = nodeTwoPrev;
+
                 nodeTwoPrev.nextNode = nodeOne;
             }
-
-            nodeOne.prevNode = nodeTwoPrev;
-            nodeOne.nextNode = nodeTwoNext;
-
-            //Checks if nodeTwo is the last node
-            if (nodeTwoNext != null)
+            else
             {
-                nodeTwoNext.prevNode = nodeOne;
-            }
+                //check if either nodes are the first in list, if so, update the firstnode
+                if (list.firstNode == nodeOne)
+                {
+                    list.firstNode = nodeTwo;
+                }
+                else if (list.firstNode == nodeTwo)
+                {
+                    list.firstNode = nodeOne;
+                }
 
+                ////check if either nodes are the first in list, if so, update the firstnode
+                //if (list.firstNode == nodeOne)
+                //{
+                //    list.firstNode = nodeTwo;
+                //}
+                //else if (list.firstNode == nodeTwo)
+                //{
+                //    list.firstNode = nodeOne;
+                //}
+
+                ////Makes sure neither node is the last node
+                //if (nodeTwoNext != null)
+                //{
+                //    nodeTwoNext.prevNode = nodeOne;
+                //}
+                //if (nodeOneNext != null)
+                //{
+                //    nodeOneNext.prevNode = nodeTwo;
+                //}
+
+                ////Makes sure neither node is the first node
+                //if (nodeTwoPrev != null)
+                //{
+                //    nodeTwoPrev.nextNode = nodeOne;
+                //}
+                //if (nodeOnePrev != null)
+                //{
+                //    nodeOnePrev.nextNode = nodeTwo;
+                //}
+
+                nodeTwo.prevNode = nodeOnePrev;
+                nodeTwo.nextNode = nodeOneNext;
+
+                nodeOne.prevNode = nodeTwoPrev;
+                nodeOne.nextNode = nodeTwoNext;
+
+                //Makes sure neither node is the last node
+                if (nodeTwoNext != null)
+                {
+                    nodeTwoNext.prevNode = nodeOne;
+                }
+                if (nodeOneNext != null)
+                {
+                    nodeOneNext.prevNode = nodeTwo;
+                }
+
+                //Makes sure neither node is the first node
+                if (nodeTwoPrev != null)
+                {
+                    nodeTwoPrev.nextNode = nodeOne;
+                }
+                if (nodeOnePrev != null)
+                {
+                    nodeOnePrev.nextNode = nodeTwo;
+                }
+            }
         }
 
         //Sorts a given list by node data
@@ -434,13 +486,13 @@ namespace Double_Linked_List
         //Recursive Quicksort
         static void Quicksort(List list)
         {
-            Quicksort(list, list.firstNode, LastNode(list));
+            //Change back
+            Node lastNode = LastNode(list);
+            Quicksort(list, list.firstNode, lastNode);
         }
 
         static void Quicksort(List list, Node left, Node right)
         {
-            ShowList(list);
-
             //Find out which numnber node the left and right nodes are
             int leftNumber = FindNodeNumber(list, left), rightNumber = FindNodeNumber(list, right);
 
@@ -450,17 +502,8 @@ namespace Double_Linked_List
                 return;
             }
 
-            //Make the pivot node the last node
-            
-            //int pivotNumber = (leftNumber + rightNumber) / 2;
-            ////Grab a pivot node at about the half way point
-            //for (int i = 1; i < pivotNumber; i++)
-            //{
-            //    pivot = pivot.nextNode;
-            //}
-
             //Find the partition point of the list after swapping nodes
-            Node partitionNode = QuicksortPartition(list, left, right);
+            Node partitionNode = QuicksortPartition(ref list, ref left, ref right);
 
             //Run quicksort on either side of the list
             Quicksort(list, left, partitionNode);
@@ -468,7 +511,7 @@ namespace Double_Linked_List
         }
 
         //Return the partition point and swap appropriate nodes
-        static Node QuicksortPartition(List list, Node left, Node right)
+        static Node QuicksortPartition(ref List list, ref Node left, ref Node right)
         {
             Node leftPointer, rightPointer = right.prevNode, pivot = right;
 
@@ -484,32 +527,13 @@ namespace Double_Linked_List
                         rightPointer = rightPointer.prevNode;
                     }
 
-                    //If the pivot is larger than all the other numbers in the list
-                    if (rightPointer.data > pivot.data && rightPointer == leftPointer)
-                    {
-                        Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
-
-                        if (leftPointer == left)
-                        {
-                            left = rightPointer;
-                        }
-
-                        SwapNodes(list, leftPointer, pivot);
-                        pivot = LastNode(list);
-
-                        leftPointer = tempRightPointer;
-                        rightPointer = pivot;
-
-                        break;
-                    }
-
                     //break if the pointers are the same
                     if (leftPointer != rightPointer)
                     {
-                        if (leftPointer == left)
-                        {
-                            left = rightPointer;
-                        }
+                        //if (leftPointer == left)
+                        //{
+                        //    left = rightPointer;
+                        //}
 
                         Node tempLeftPointer = leftPointer, tempRightPointer = rightPointer;
 
@@ -525,15 +549,23 @@ namespace Double_Linked_List
                 }
             }
 
-            if (leftPointer.data <= pivot.data)
+            if (left.nextNode == right && left.data <= right.data)
             {
-                return leftPointer;
+                left = right;
             }
 
-            //SwapNodes(list, leftPointer, pivot);
-            right = leftPointer;
+            //Swap leftPointer and pivot, only if leftPointer is larger
+            if (leftPointer.data <= pivot.data)
+            {
+                return pivot;
+            }
 
-            return leftPointer;
+            SwapNodes(list, leftPointer, pivot);
+
+            right = leftPointer;
+            left = rightPointer;
+
+            return pivot;
         }
 
         //Returns last node in list
@@ -651,25 +683,13 @@ namespace Double_Linked_List
         static int FindNodeNumber(List list, Node nodeToFind)
         {
             Node nodeToCheck = list.firstNode;
-            int length = LengthOfList(list), count = 1;
+            int count = 1;
 
             while (nodeToCheck != nodeToFind)
             {
                 nodeToCheck = nodeToCheck.nextNode;
                 count++;
             }
-
-            //if (nodeToFind != null)
-            //{
-                //for (i = 1; i < length; i++)
-                //{
-                //    if (nodeToCheck == nodeToFind)
-                //    {
-                //        return i;
-                //    }
-                //    nodeToCheck = nodeToCheck.nextNode;
-                //}
-            //}
             return count;
         }
 
