@@ -76,12 +76,14 @@ namespace Double_Linked_List
             AppendList(list, listTwo);
             ShowList(list);
 
+            //Insertion sort has a paddy if the first number is a 0
             Console.WriteLine("\nInsertion sorting this list: ");
             ShowList(list);
             InsertionSort(list);
             Console.WriteLine("Sorted!");
             ShowList(list);
 
+            //Quicksorting dropping nodes when trying to traverse backwards. Check the node.prevNode section of the swapnodes function
             Console.WriteLine("\nQuicksorting this list: ");
             Quicksort(listThree);
             Console.WriteLine("Sorted!");
@@ -378,7 +380,7 @@ namespace Double_Linked_List
             List sortedList = new List();
 
             //Until end of list
-            while (currentNode!= null)
+            while (currentNode != null)
             {
                 Node next = currentNode.nextNode;
 
@@ -461,9 +463,6 @@ namespace Double_Linked_List
             {
                 //Find the partition point of the list after swapping nodes
                 Node partitionNode = QuicksortPartition(ref list, ref left, ref right);
-
-                //ShowList(list);
-                //Console.WriteLine("");
 
                 //Run quicksort on either side of the list
                 Quicksort(list, left, partitionNode.prevNode);
@@ -553,7 +552,7 @@ namespace Double_Linked_List
                 {
                     Console.Write(node.data);
                 }
-                
+
                 node = node.nextNode;
             }
             Console.WriteLine("");
@@ -608,7 +607,7 @@ namespace Double_Linked_List
             {
                 if (nodeToCheck.data == nodeData)
                 {
-                    Console.WriteLine("Node found; number: " + (i+1));
+                    Console.WriteLine("Node found; number: " + (i + 1));
                     return true;
                 }
                 nodeToCheck = nodeToCheck.nextNode;
