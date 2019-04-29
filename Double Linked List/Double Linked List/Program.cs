@@ -28,11 +28,10 @@ namespace Double_Linked_List
         {
             List list = new List();
             List listTwo = new List();
+            List listThree = new List();
             int nodesToAdd = 5;
 
-            //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
-            Random r = new Random();                            //
-            //CAN'T USE RANDOM - CREATE OWN - YOU WILL LOSE A MARK
+            Random r = new Random();
 
             //Console.WriteLine("How many nodes would you like to add?");
             //nodesToAdd = Convert.ToInt32(Console.ReadLine());
@@ -42,6 +41,7 @@ namespace Double_Linked_List
             {
                 InsertFront(list, r.Next(100));
                 InsertFront(listTwo, r.Next(100));
+                InsertFront(listThree, r.Next(100));
             }
 
             ShowList(list);
@@ -60,28 +60,32 @@ namespace Double_Linked_List
             FindNode(list, 13);
             FindNode(list, list.firstNode.nextNode.nextNode);
 
-            Console.WriteLine("Remove first node:");
+            Console.WriteLine("\nRemove first node:");
             RemoveFirstNode(list);
             ShowList(list);
 
-            Console.WriteLine("Remove 4th node:");
+            Console.WriteLine("\nRemove 4th node:");
             RemoveNode(list, 4);
             ShowList(list);
 
-            Console.WriteLine("2 nodes will be swapped: ");
+            Console.WriteLine("\n2 nodes will be swapped: ");
             SwapNodes(list, list.firstNode.nextNode, list.firstNode.nextNode.nextNode.nextNode.nextNode.nextNode);
             ShowList(list);
 
-            Console.WriteLine("Add another list onto the end");
+            Console.WriteLine("\nAdd another list onto the end");
             AppendList(list, listTwo);
             ShowList(list);
 
-            Console.WriteLine("Sorting the list... ");
+            Console.WriteLine("\nInsertion sorting this list: ");
             ShowList(list);
-            //InsertionSort(list);
-            Quicksort(list);
+            InsertionSort(list);
             Console.WriteLine("Sorted!");
             ShowList(list);
+
+            Console.WriteLine("\nQuicksorting this list: ");
+            Quicksort(listThree);
+            Console.WriteLine("Sorted!");
+            ShowList(listThree);
 
             Console.WriteLine("");
 
@@ -120,9 +124,8 @@ namespace Double_Linked_List
         //Adds a node to the end of a list
         static void InsertBack(List list, int data)
         {
+            //Create a node to add
             Node nodeToAdd = CreateNode(data);
-            //Will contain the last current node
-            Node lastNode = list.firstNode;
 
             nodeToAdd.nextNode = null;
 
@@ -135,10 +138,8 @@ namespace Double_Linked_List
             //goes to the end of the list, then alters prev and next node for the nodeToAdd
             else
             {
-                while (lastNode.nextNode != null)
-                {
-                    lastNode = lastNode.nextNode;
-                }
+                //Grab last node from the list
+                Node lastNode = LastNode(list);
 
                 lastNode.nextNode = nodeToAdd;
                 nodeToAdd.prevNode = lastNode;
@@ -148,12 +149,7 @@ namespace Double_Linked_List
         //Appends listTwo on the end of listOne 
         static void AppendList(List listOne, List listTwo)
         {
-            Node listOneLastNode = listOne.firstNode;
-
-            while (listOneLastNode.nextNode != null)
-            {
-                listOneLastNode = listOneLastNode.nextNode;
-            }
+            Node listOneLastNode = LastNode(listOne);
 
             listOneLastNode.nextNode = listTwo.firstNode;
             listTwo.firstNode.prevNode = listOneLastNode;
