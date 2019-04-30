@@ -76,14 +76,13 @@ namespace Double_Linked_List
             AppendList(list, listTwo);
             ShowList(list);
 
-            //Insertion sort has a paddy if the first number is a 0
+            //Insertion sort has a paddy if the first number is the smallest
             Console.WriteLine("\nInsertion sorting this list: ");
             ShowList(list);
             InsertionSort(list);
             Console.WriteLine("Sorted!");
             ShowList(list);
 
-            //Quicksorting dropping nodes when trying to traverse backwards. Check the node.prevNode section of the swapnodes function
             Console.WriteLine("\nQuicksorting this list: ");
             Quicksort(listThree);
             Console.WriteLine("Sorted!");
@@ -92,8 +91,16 @@ namespace Double_Linked_List
             Console.WriteLine("");
 
             ShowTraversal(list);
+            Console.WriteLine("");
 
             Console.ReadLine();
+        }
+
+        static void Sum(int n)
+        {
+            int result = 0;
+            for (int i = 0; i < n; i++)
+                result += i;
         }
 
         //Creates a node with data
