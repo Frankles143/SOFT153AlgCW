@@ -6,6 +6,10 @@
 //
 //Creating a double linked list and adding functionality
 
+//To-Do//
+
+//Quicksort occasionally drops lowest value node?
+
 namespace Double_Linked_List
 {
     //Node class with references to the next and previous nodes
@@ -33,74 +37,75 @@ namespace Double_Linked_List
 
             Random r = new Random();
 
-            //Console.WriteLine("How many nodes would you like to add?");
-            //nodesToAdd = Convert.ToInt32(Console.ReadLine());
-
             //Creates a pre-determined number of nodes
             for (int i = 0; i < nodesToAdd; i++)
             {
                 InsertFront(list, r.Next(100));
                 InsertFront(listTwo, r.Next(100));
                 InsertFront(listThree, r.Next(100));
+                InsertFront(listThree, r.Next(100));
             }
 
+            //Showing the list and how long it is
             ShowList(list);
             PrintLengthOfList(list);
 
+            //Inserting nodes to the back of a list
             for (int i = 0; i < nodesToAdd; i++)
             {
                 InsertBack(list, r.Next(100));
             }
 
+            //Inserting a node after a specific node, using a number or node reference
             InsertAfter(list, 13, 3);
 
             ShowList(list);
             PrintLengthOfList(list);
 
+            //Finding two nodes, one based on data, the other by node reference 
             FindNode(list, 13);
             FindNode(list, list.firstNode.nextNode.nextNode);
 
+            //Removes the first node in the list
             Console.WriteLine("\nRemove first node:");
             RemoveFirstNode(list);
             ShowList(list);
 
+            //Removes x node in list, using number or node reference
             Console.WriteLine("\nRemove 4th node:");
             RemoveNode(list, 4);
             ShowList(list);
 
+            //Swapping two nodes by node reference
             Console.WriteLine("\n2 nodes will be swapped: ");
             SwapNodes(list, list.firstNode.nextNode, list.firstNode.nextNode.nextNode.nextNode.nextNode.nextNode);
             ShowList(list);
 
+            //Adds a list onto the end of another, by list reference
             Console.WriteLine("\nAdd another list onto the end");
             AppendList(list, listTwo);
             ShowList(list);
 
-            //Insertion sort has a paddy if the first number is the smallest
+            //Insertion sorting a list
             Console.WriteLine("\nInsertion sorting this list: ");
             ShowList(list);
             InsertionSort(list);
             Console.WriteLine("Sorted!");
             ShowList(list);
 
+            //Quicksorting a list
             Console.WriteLine("\nQuicksorting this list: ");
+            ShowList(listThree);
             Quicksort(listThree);
             Console.WriteLine("Sorted!");
             ShowList(listThree);
 
+            //Showing that a list can be travelled in both directions
             Console.WriteLine("");
-
             ShowTraversal(list);
             Console.WriteLine("");
 
             Console.ReadLine();
-        }
-
-        static void Sum(int n)
-        {
-            int result = 0;
-            for (int i = 0; i < n; i++)
-                result += i;
         }
 
         //Creates a node with data
@@ -164,7 +169,7 @@ namespace Double_Linked_List
             listTwo.firstNode.prevNode = listOneLastNode;
         }
 
-        //Inserts a node after a specific node
+        //Inserts a node after a specific node - using a node number
         static void InsertAfter(List list, int data, int nodeBeforeNumber)
         {
             Node nodeToAdd = CreateNode(data);
@@ -264,8 +269,6 @@ namespace Double_Linked_List
                 nodeToBeRemoved.nextNode.prevNode = nodeToBeRemoved.prevNode;
                 nodeToBeRemoved.prevNode.nextNode = nodeToBeRemoved.nextNode;
             }
-
-
             return nodeToBeRemoved;
         }
 
@@ -411,38 +414,31 @@ namespace Double_Linked_List
             //If the list is empty make it the first node
             if (list.firstNode == null)
             {
-                list.firstNode = node;
+                InsertFront(list, node.data);
             }
             //If the data is less than the current first node, make it the firstnode
-            else if (list.firstNode.data >= node.data)
+            else if (node.data <= list.firstNode.data)
             {
-                node.nextNode = list.firstNode;
-                node.nextNode.prevNode = node;
-                list.firstNode = node;
+                InsertFront(list, node.data);
             }
             //Anything else:
             else
             {
                 currentNode = list.firstNode;
 
-                while (currentNode.nextNode != null)
+                while (currentNode != null)
                 {
                     //Find the place in the list the node needs to be inserted
-                    if (node.data < currentNode.nextNode.data)
+                    if (node.data <= currentNode.data)
                     {
-                        node.nextNode = currentNode.nextNode;
-                        node.nextNode.prevNode = node;
-                        currentNode.nextNode = node;
-                        node.prevNode = currentNode;
-
+                        InsertAfter(list, node.data, currentNode.prevNode);
                         break;
                     }
                     //Checks to see if the data is bigger than the last node in list
-                    else if (node.data > currentNode.nextNode.data && currentNode.nextNode.nextNode == null)
+                    else if (node.data > currentNode.data && currentNode.nextNode == null)
                     {
-                        node.nextNode = null;
-                        currentNode.nextNode.nextNode = node;
-                        node.prevNode = currentNode.nextNode;
+                        InsertBack(list, node.data);
+                        break;
                     }
 
                     currentNode = currentNode.nextNode;
@@ -450,6 +446,7 @@ namespace Double_Linked_List
             }
         }
 
+        //First quicksort call that then recursively quicksorts a list
         static void Quicksort(List list)
         {
             Quicksort(list, list.firstNode, LastNode(list));
@@ -477,6 +474,7 @@ namespace Double_Linked_List
             }
         }
 
+        //Part of the quicksort function, it swaps node and returns a partition node
         static Node QuicksortPartition(ref List list, ref Node left, ref Node right)
         {
             Node leftPointer = left, rightPointer = right.prevNode, pivot = right;
@@ -644,7 +642,7 @@ namespace Double_Linked_List
             return false;
         }
 
-        //Finds a node based on node passed in
+        //Finds a node number based on node passed in
         static int FindNodeNumber(List list, Node nodeToFind)
         {
             Node nodeToCheck = list.firstNode;
@@ -673,7 +671,7 @@ namespace Double_Linked_List
             Console.WriteLine("There are " + count + " nodes in the list.");
         }
 
-        //returns number of nodes in a list
+        //Returns number of nodes in a list
         static int LengthOfList(List list)
         {
             int count = 0;
