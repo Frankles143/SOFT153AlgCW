@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Collections.Generic;
 
 //Author: Josh Franklin
 //Created: 21/03/19
@@ -24,7 +25,7 @@ namespace String_Acrobatics
 
     class CharNode
     {
-        public char data;
+        public char[] data;
         public CharNode nextNode;
         public CharNode prevNode;
     }
@@ -46,7 +47,7 @@ namespace String_Acrobatics
     {
         static void Main(string[] args)
         {
-
+            ReadInData();
 
         }
 
@@ -54,11 +55,50 @@ namespace String_Acrobatics
         {
             using (StreamReader fileInput = new StreamReader("records.txt"))
             {
+                
+
                 //Will read until end of the file
                 while (!fileInput.EndOfStream)
                 {
-                    char[] firstName = new char[0];
-                    char input = fileInput.Read();
+                    List<int> firstName = new List<int>();
+                    List<int> lastName = new List<int>();
+                    List<int> Id = new List<int>();
+
+                    int input = fileInput.Read();
+
+                    //Reads in firstName until hits a comma
+                    while (input != 44)
+                    {
+                        firstName.Add(input);
+                        input = fileInput.Read();
+                    }
+
+                    //Extra .Read to clear the space
+                    input = fileInput.Read();
+                    input = fileInput.Read();
+
+                    //Reads in lastName until hits a comma
+                    while (input != 44)
+                    {
+                        lastName.Add(input);
+                        input = fileInput.Read();
+                    }
+
+                    //Extra .Read to clear the space
+                    input = fileInput.Read();
+                    input = fileInput.Read();
+
+                    while (input != 13)
+                    {
+                        Id.Add(input);
+                        input = fileInput.Read();
+                    }
+
+                    CharNode firstNameNode = new CharNode();
+                    CharNode lastNameNode = new CharNode();
+                    IntNode IdNode = new IntNode();
+
+
                 }
             }
         }
