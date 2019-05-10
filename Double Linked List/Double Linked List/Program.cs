@@ -2,13 +2,9 @@
 
 //Author: Josh Franklin
 //Created: 21/03/19
-//Edited: JF 21/03/19
+//Edited: JF 09/05/19
 //
 //Creating a double linked list and adding functionality
-
-//To-Do//
-
-//Quicksort occasionally drops lowest value node?
 
 namespace Double_Linked_List
 {

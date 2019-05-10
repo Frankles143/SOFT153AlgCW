@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 //Author: Josh Franklin
@@ -60,45 +61,61 @@ namespace String_Acrobatics
                 //Will read until end of the file
                 while (!fileInput.EndOfStream)
                 {
-                    List<int> firstName = new List<int>();
-                    List<int> lastName = new List<int>();
-                    List<int> Id = new List<int>();
+                    List<char> firstName = new List<char>();
+                    List<char> lastName = new List<char>();
+                    List<char> Id = new List<char>();
 
-                    int input = fileInput.Read();
+                    char input = Convert.ToChar(fileInput.Read());
 
                     //Reads in firstName until hits a comma
                     while (input != 44)
                     {
                         firstName.Add(input);
-                        input = fileInput.Read();
+                        input = Convert.ToChar(fileInput.Read());
                     }
-
+                    
                     //Extra .Read to clear the space
-                    input = fileInput.Read();
-                    input = fileInput.Read();
+                    input = Convert.ToChar(fileInput.Read());
+                    input = Convert.ToChar(fileInput.Read());
 
                     //Reads in lastName until hits a comma
                     while (input != 44)
                     {
                         lastName.Add(input);
-                        input = fileInput.Read();
+                        input = Convert.ToChar(fileInput.Read());
                     }
 
                     //Extra .Read to clear the space
-                    input = fileInput.Read();
-                    input = fileInput.Read();
+                    input = Convert.ToChar(fileInput.Read());
+                    input = Convert.ToChar(fileInput.Read());
 
+                    //Reads in ID until it hits a next line
                     while (input != 13)
                     {
                         Id.Add(input);
-                        input = fileInput.Read();
+                        input = Convert.ToChar(fileInput.Read());
                     }
 
                     CharNode firstNameNode = new CharNode();
                     CharNode lastNameNode = new CharNode();
                     IntNode IdNode = new IntNode();
 
+                    //For testing
+                    //foreach (char c in firstName)
+                    //{
+                    //    Console.WriteLine($"{c}");
+                    //}
+                    //foreach (char c in lastName)
+                    //{
+                    //    Console.WriteLine($"{c}");
+                    //}
+                    //foreach (char c in Id)
+                    //{
+                    //    Console.WriteLine($"{c}");
+                    //}
 
+
+                    //char[] firstNameArray = new char[];
                 }
             }
         }
